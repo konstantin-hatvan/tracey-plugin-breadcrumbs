@@ -1,0 +1,27 @@
+{
+    "name": "tracey-plugin-breadcrumbs",
+    "version": "0.0.3",
+    "description": "Plugin to generate a requirement breadcrumbs",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/konstantin-hatvan/tracey-plugin-breadcrumbs.git"
+    },
+    "keywords": [
+        "tracey",
+        "plugin"
+    ],
+    "author": "Konstantin Hatvan",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/konstantin-hatvan/tracey-plugin-breadcrumbs/issues"
+    },
+    "homepage": "https://github.com/konstantin-hatvan/tracey-plugin-breadcrumbs#readme",
+    "dependencies": {
+        "unist-util-visit": "2.0.3",
+        "mdast-builder": "1.1.1"
+    },
+    "scripts": {
+        "postversion": "git push && git push --tags"
+    }
+}
