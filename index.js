@@ -2,15 +2,20 @@ const path = require('path');
 const visit = require('unist-util-visit');
 const { html, link, paragraph, text } = require('mdast-builder');
 
-const requirementHasParent = (requirement) => Object.prototype.hasOwnProperty.call(requirement, 'parent');
+const defaultConfiguration = {
+    property: 'parent',
+    separator: '>',
+};
 
-const walkRootline = (current, requirements) => {
-    if (requirementHasParent(current)) {
+const requirementHasParent = (requirement, configuration) => Object.prototype.hasOwnProperty.call(requirement, configuration.property);
+
+const walkRootline = (current, requirements, configuration) => {
+    if (requirementHasParent(current, configuration)) {
         const parent = requirements.find(aRequirement => aRequirement.id === current.parent);
         if (parent) {
             return [
                 current,
-                ...walkRootline(parent, requirements),
+                ...walkRootline(parent, requirements, configuration),
             ];
         }
     }
@@ -30,13 +35,13 @@ const removeBreadcrumbs = (original) => {
     return requirement;
 };
 
-const createBreadcrumbs = (requirement, parents) => {
+const createBreadcrumbs = (requirement, parents, configuration) => {
     const updatedParents = parents.map((parent, index) => {
         const relativeLink = path.relative(path.parse(requirement.file).dir, parent.file);
         let output = [ link(relativeLink, parent.id, text(parent.id)) ];
 
         if (index < parents.length - 1) {
-            output.push(text(' > '));
+            output.push(text(` ${configuration.separator} `));
         }
 
         return output;
@@ -49,9 +54,9 @@ const createBreadcrumbs = (requirement, parents) => {
     ];
 };
 
-const updateBreadcrumbs = (original, parents) => {
+const updateBreadcrumbs = (original, parents, configuration) => {
     const requirement = { ...original };
-    const breadcrumbs = createBreadcrumbs(requirement, parents);
+    const breadcrumbs = createBreadcrumbs(requirement, parents, configuration);
     let shouldAddBreadcrumbsToTop = true;
 
 
@@ -71,13 +76,13 @@ const updateBreadcrumbs = (original, parents) => {
     return requirement;
 };
 
-const plugin = (configuration) => ({ requirements, annotations, tracelinks }) => {
+const plugin = (configuration = defaultConfiguration) => ({ requirements, annotations, tracelinks }) => {
     const updatedRequirements = requirements.map(theRequirement => {
-        const rootline = walkRootline(theRequirement, requirements);
+        const rootline = walkRootline(theRequirement, requirements, configuration);
 
         if (rootline.length > 1) {
             let [ self, ...parents ] = rootline;
-            return updateBreadcrumbs(theRequirement, parents);
+            return updateBreadcrumbs(theRequirement, parents, configuration);
         }
 
         return removeBreadcrumbs(theRequirement);
