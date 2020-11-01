@@ -1,6 +1,6 @@
 # tracey-plugin-breadcrumbs
 
-Generates a breadcrumbs navigation for reqruirements.
+Generates a breadcrumbs navigation for requirements.
 
 ## Usage
 
