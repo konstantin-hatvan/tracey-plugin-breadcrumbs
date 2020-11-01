@@ -1,6 +1,6 @@
 {
     "name": "tracey-plugin-breadcrumbs",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Plugin to generate a requirement breadcrumbs",
     "main": "index.js",
     "repository": {
