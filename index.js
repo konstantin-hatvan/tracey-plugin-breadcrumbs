@@ -89,10 +89,10 @@ const plugin = (configuration = defaultConfiguration) => ({ requirements, annota
     });
 
     const updatedTracelinks = tracelinks.map(theTracelink => {
-        const updatedRequirement = updatedRequirements.find(theRequirement => theRequirement.id === theTracelink.destination.id);
+        const updatedRequirement = updatedRequirements.find(theRequirement => theRequirement.id === theTracelink.requirement.id);
 
         return {
-            destination: updatedRequirement,
+            requirement: updatedRequirement,
             annotation: theTracelink.annotation,
         };
     });
