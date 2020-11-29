@@ -76,7 +76,7 @@ const updateBreadcrumbs = (original, parents, configuration) => {
     return requirement;
 };
 
-const plugin = (configuration = defaultConfiguration) => ({ requirements, annotations, tracelinks }) => {
+const plugin = (configuration = defaultConfiguration) => ({ requirements, annotations }) => {
     const updatedRequirements = requirements.map(theRequirement => {
         const rootline = walkRootline(theRequirement, requirements, configuration);
 
@@ -88,19 +88,9 @@ const plugin = (configuration = defaultConfiguration) => ({ requirements, annota
         return removeBreadcrumbs(theRequirement);
     });
 
-    const updatedTracelinks = tracelinks.map(theTracelink => {
-        const updatedRequirement = updatedRequirements.find(theRequirement => theRequirement.id === theTracelink.requirement.id);
-
-        return {
-            requirement: updatedRequirement,
-            annotation: theTracelink.annotation,
-        };
-    });
-
     return {
         requirements: updatedRequirements,
         annotations,
-        tracelinks: updatedTracelinks,
     };
 };
 
