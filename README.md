@@ -23,7 +23,7 @@ const BreadcrumbsPlugin = require('tracey-plugin-breadcrumbs');
 
 module.exports = {
     plugins: [
-        BreadcrumbsPlugin({ /* configuration options */ }),
+        BreadcrumbsPlugin.plugin({ /* configuration options */ }),
     ],
 };
 ```
